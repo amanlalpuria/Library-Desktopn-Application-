@@ -5,6 +5,16 @@
  */
 package liberaryproject;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author amans
@@ -83,6 +93,12 @@ public class BorrowBook extends javax.swing.JFrame {
         borrowIdPannel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         studentIDLabel.setText("Student ID");
+
+        studentIDFIeld.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                studentIDFIeldMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout borrowIdPannelLayout = new javax.swing.GroupLayout(borrowIdPannel);
         borrowIdPannel.setLayout(borrowIdPannelLayout);
@@ -164,10 +180,27 @@ public class BorrowBook extends javax.swing.JFrame {
         bookIDPannel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         doneBorrowingBookButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Checkmark_25px_1.png"))); // NOI18N
+        doneBorrowingBookButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doneBorrowingBookButtonActionPerformed(evt);
+            }
+        });
 
         accessionNumberLabel.setText("Accession No.");
 
         classNumberLabel.setText("Class No.");
+
+        accessionNumberField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                accessionNumberFieldMouseEntered(evt);
+            }
+        });
+
+        classNumberField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                classNumberFieldMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout bookIDPannelLayout = new javax.swing.GroupLayout(bookIDPannel);
         bookIDPannel.setLayout(bookIDPannelLayout);
@@ -293,6 +326,126 @@ public class BorrowBook extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
+    private void doneBorrowingBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneBorrowingBookButtonActionPerformed
+             
+         String title = null;
+         String author = null;
+        boolean r=false;
+       LocalDate date1=java.time.LocalDate.now();
+        String date=toString(date1);
+         LocalDate date2=date1.plusDays(30);
+        String rdate=toString(date2);
+        JOptionPane.showMessageDialog(null,date);
+        JOptionPane.showMessageDialog(null,rdate);
+      // String date="23-1-1017";
+      // String rdate="23-1-1017";
+       
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+              
+            Connection   con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libproject","root","rucha");
+            
+            PreparedStatement ps=con.prepareStatement("SELECT title,author_n,clas FROM books WHERE access_no=?");
+            ResultSet rs;
+            ps.setString(1, accessionNumberField.getText());//accessionnumber primary key
+            
+            rs=ps.executeQuery();
+            PreparedStatement pq=con.prepareStatement("INSERT INTO borrower VALUES(?,?,?,?,?,?,?);");
+            while(rs.next())
+            {
+                
+                title=rs.getString("title");
+                author=rs.getString("author_n");
+            
+            pq.setString(1, studentIDFIeld.getText());
+                 
+            pq.setString(2, accessionNumberField.getText());
+             
+            pq.setString(3, rs.getString("clas"));
+             
+             pq.setString(4, rs.getString(1));
+              
+             pq.setString(5, rs.getString(2));
+             
+             pq.setString(6,date);
+             pq.setString(7,rdate);
+             
+              
+              r=true;
+            }
+            
+            
+           
+            
+             pq.execute();
+            
+            // catch (SQLException e ) {
+        } catch (SQLException ex) {
+            Logger.getLogger(BorrowBook.class.getName()).log(Level.SEVERE, null, ex);
+        }catch (ClassNotFoundException ex) {
+            Logger.getLogger(BorrowBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+         if(r==true)
+         {
+             JOptionPane.showMessageDialog(null,"operation succesfull" );
+         }
+    }//GEN-LAST:event_doneBorrowingBookButtonActionPerformed
+
+    private void studentIDFIeldMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_studentIDFIeldMouseEntered
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+          Connection   con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libproject","root","rucha");
+       
+        PreparedStatement ps = con.prepareStatement("SELECT stud_name,batch,depart FROM studinf WHERE studid=? ;");
+        ResultSet rs;
+        ps.setString(1,studentIDFIeld.getText());
+      
+        rs = ps.executeQuery();
+       
+    while(rs.next()) { 
+     // 
+       nameField.setText(rs.getString(1));
+       batchField.setText(rs.getString(2));
+        departmentField.setText(rs.getString(3));
+     
+    }
+         } catch (SQLException ex) {
+            Logger.getLogger(BorrowBook.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BorrowBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_studentIDFIeldMouseEntered
+
+    private void accessionNumberFieldMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_accessionNumberFieldMouseEntered
+      
+    }//GEN-LAST:event_accessionNumberFieldMouseEntered
+
+    private void classNumberFieldMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_classNumberFieldMouseEntered
+         try {
+            // TODO add your handling code here:
+            Class.forName("com.mysql.jdbc.Driver");
+        
+              
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/libproject","root","rucha");
+        
+            
+            PreparedStatement ps2=con.prepareStatement("SELECT clas FROM books WHERE access_no=?");
+            ResultSet rs2;
+            ps2.setString(1, accessionNumberField.getText());//accessionnumber primary key
+            rs2=ps2.executeQuery();
+            while(rs2.next())
+            {
+                classNumberField.setText(rs2.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BorrowBook.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(BorrowBook.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_classNumberFieldMouseEntered
+
+    
     /**
      * @param args the command line arguments
      */
@@ -353,4 +506,7 @@ public class BorrowBook extends javax.swing.JFrame {
     private javax.swing.JLabel studentIDLabel;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+ public String toString(LocalDate date1) {
+        return date1.toString();//To change body of generated methods, choose Tools | Templates.
+    }
 }
