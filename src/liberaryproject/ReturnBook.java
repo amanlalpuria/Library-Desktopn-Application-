@@ -4,10 +4,18 @@
  * and open the template in the editor.
  */
 package liberaryproject;
+import liberaryproject.Menu.ManageBorrower;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
- * @author amans
+ * @author Rozi Roti
  */
 public class ReturnBook extends javax.swing.JFrame {
 
@@ -16,6 +24,22 @@ public class ReturnBook extends javax.swing.JFrame {
      */
     public ReturnBook() {
         initComponents();
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = null;
+            con = DriverManager.getConnection("jdbc:mysql://localhost/liberaryproject","root", "");
+            System.out.print("Database is connected !");
+            Statement stmt=con.createStatement();  
+            ResultSet rs=stmt.executeQuery("select * from borrower");
+            borotable.setModel(DbUtils.resultSetToTableModel(rs));
+            
+            con.close();
+        }
+        catch(  ClassNotFoundException | SQLException e)
+        {
+            System.out.print("Do not connect to DB - Error:"+e);
+        }
     }
 
     /**
@@ -27,29 +51,26 @@ public class ReturnBook extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        query1 = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("");
-        query2 = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("");
-        entityManager1 = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory(null).createEntityManager();
         indiraPannel = new javax.swing.JPanel();
         indiraButton = new javax.swing.JButton();
-        studedntIDForSearchField = new javax.swing.JTextField();
-        studentIdforSearchLabel = new javax.swing.JLabel();
-        returnInfoPannel = new javax.swing.JPanel();
+        backButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        borotable = new javax.swing.JTable();
+        titleLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         accessionNumberLabel = new javax.swing.JLabel();
         borrowDateLabel = new javax.swing.JLabel();
         todaysDateLabel = new javax.swing.JLabel();
         lateLabel = new javax.swing.JLabel();
         lateFineLabel = new javax.swing.JLabel();
-        accessionNumberField = new javax.swing.JTextField();
-        borrowDateField = new javax.swing.JTextField();
-        todaysDateField = new javax.swing.JTextField();
-        lateFineField = new javax.swing.JTextField();
-        lateField = new javax.swing.JTextField();
-        doneButton = new javax.swing.JButton();
-        returnInfoLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        titleLabel = new javax.swing.JLabel();
-        backButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        todaysdatetextfield = new javax.swing.JTextField();
+        latetextfield = new javax.swing.JTextField();
+        latefinetextfield = new javax.swing.JTextField();
+        borrowdateTextField = new javax.swing.JTextField();
+        accessionnoTextField = new javax.swing.JTextField();
+        studentidlabel = new javax.swing.JLabel();
+        studentIDTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,11 +100,30 @@ public class ReturnBook extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        studentIdforSearchLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        studentIdforSearchLabel.setText("Student ID:");
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Back_25px.png"))); // NOI18N
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
 
-        returnInfoPannel.setBackground(new java.awt.Color(153, 255, 153));
-        returnInfoPannel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        borotable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(borotable);
+
+        titleLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        titleLabel.setText("Return Book");
+
+        jPanel1.setBackground(new java.awt.Color(153, 255, 153));
 
         accessionNumberLabel.setText("Accession No.:");
 
@@ -95,83 +135,98 @@ public class ReturnBook extends javax.swing.JFrame {
 
         lateFineLabel.setText("Late Fine:");
 
-        doneButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Checkmark_25px_1.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Checkmark_25px_1.png"))); // NOI18N
 
-        javax.swing.GroupLayout returnInfoPannelLayout = new javax.swing.GroupLayout(returnInfoPannel);
-        returnInfoPannel.setLayout(returnInfoPannelLayout);
-        returnInfoPannelLayout.setHorizontalGroup(
-            returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(returnInfoPannelLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(returnInfoPannelLayout.createSequentialGroup()
-                        .addComponent(borrowDateLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(borrowDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(returnInfoPannelLayout.createSequentialGroup()
-                        .addComponent(accessionNumberLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(accessionNumberField, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                    .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(returnInfoPannelLayout.createSequentialGroup()
-                            .addComponent(lateFineLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lateFineField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, returnInfoPannelLayout.createSequentialGroup()
-                            .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(todaysDateLabel)
-                                .addComponent(lateLabel))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(todaysDateField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lateField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-            .addGroup(returnInfoPannelLayout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(doneButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        returnInfoPannelLayout.setVerticalGroup(
-            returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(returnInfoPannelLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(returnInfoPannelLayout.createSequentialGroup()
-                        .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(accessionNumberLabel)
-                            .addComponent(accessionNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(borrowDateLabel)
-                            .addComponent(borrowDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(todaysDateLabel))
-                    .addComponent(todaysDateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lateLabel)
-                    .addComponent(lateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(returnInfoPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lateFineLabel)
-                    .addComponent(lateFineField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(doneButton)
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-
-        returnInfoLabel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        returnInfoLabel.setText("Return Info");
-
-        titleLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        titleLabel.setText("Return Book");
-
-        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Back_25px.png"))); // NOI18N
-        backButton.addActionListener(new java.awt.event.ActionListener() {
+        todaysdatetextfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
+                todaysdatetextfieldActionPerformed(evt);
             }
         });
+
+        latetextfield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                latetextfieldActionPerformed(evt);
+            }
+        });
+
+        borrowdateTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrowdateTextFieldActionPerformed(evt);
+            }
+        });
+
+        accessionnoTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accessionnoTextFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(accessionNumberLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(accessionnoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(lateFineLabel)
+                                        .addGap(23, 23, 23))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(todaysDateLabel)
+                                            .addComponent(lateLabel))
+                                        .addGap(1, 1, 1)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(latefinetextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(todaysdatetextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(latetextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(borrowDateLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(borrowdateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(jButton1)))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(accessionNumberLabel)
+                    .addComponent(accessionnoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(borrowDateLabel)
+                    .addComponent(borrowdateTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(todaysDateLabel)
+                    .addComponent(todaysdatetextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lateLabel)
+                    .addComponent(latetextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lateFineLabel)
+                    .addComponent(latefinetextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
+
+        studentidlabel.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        studentidlabel.setText("Student ID");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,44 +234,44 @@ public class ReturnBook extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(indiraPannel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(returnInfoLabel)
-                    .addComponent(returnInfoPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(266, 266, 266)
-                .addComponent(studentIdforSearchLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(studedntIDForSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(titleLabel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(titleLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(backButton)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(studentidlabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(studentIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(backButton)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(indiraPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(studentIdforSearchLabel)
-                    .addComponent(studedntIDForSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(returnInfoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(returnInfoPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(backButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(studentidlabel)
+                            .addComponent(studentIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(backButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
 
         pack();
@@ -231,6 +286,22 @@ public class ReturnBook extends javax.swing.JFrame {
         ManageBorrower manageBorrower=new ManageBorrower();
         manageBorrower.setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void todaysdatetextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_todaysdatetextfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_todaysdatetextfieldActionPerformed
+
+    private void borrowdateTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrowdateTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_borrowdateTextFieldActionPerformed
+
+    private void accessionnoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accessionnoTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_accessionnoTextFieldActionPerformed
+
+    private void latetextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_latetextfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_latetextfieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,28 +339,25 @@ public class ReturnBook extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField accessionNumberField;
     private javax.swing.JLabel accessionNumberLabel;
+    private javax.swing.JTextField accessionnoTextField;
     private javax.swing.JButton backButton;
-    private javax.swing.JTextField borrowDateField;
+    private javax.swing.JTable borotable;
     private javax.swing.JLabel borrowDateLabel;
-    private javax.swing.JButton doneButton;
-    private javax.persistence.EntityManager entityManager1;
+    private javax.swing.JTextField borrowdateTextField;
     private javax.swing.JButton indiraButton;
     private javax.swing.JPanel indiraPannel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField lateField;
-    private javax.swing.JTextField lateFineField;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lateFineLabel;
     private javax.swing.JLabel lateLabel;
-    private javax.persistence.Query query1;
-    private javax.persistence.Query query2;
-    private javax.swing.JLabel returnInfoLabel;
-    private javax.swing.JPanel returnInfoPannel;
-    private javax.swing.JTextField studedntIDForSearchField;
-    private javax.swing.JLabel studentIdforSearchLabel;
+    private javax.swing.JTextField latefinetextfield;
+    private javax.swing.JTextField latetextfield;
+    private javax.swing.JTextField studentIDTextField;
+    private javax.swing.JLabel studentidlabel;
     private javax.swing.JLabel titleLabel;
-    private javax.swing.JTextField todaysDateField;
     private javax.swing.JLabel todaysDateLabel;
+    private javax.swing.JTextField todaysdatetextfield;
     // End of variables declaration//GEN-END:variables
 }

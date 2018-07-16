@@ -3,21 +3,43 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package liberaryproject;
+package liberaryproject.list;
 
-import liberaryproject.Menu.LiberarianMenu;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import liberaryproject.Menu.ManageBorrower;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
  * @author amans
  */
-public class GenerateReport extends javax.swing.JFrame {
+public class BorrowerList extends javax.swing.JFrame {
 
     /**
-     * Creates new form GenerateReport
+     * Creates new form BorrowerList
      */
-    public GenerateReport() {
+    public BorrowerList() {
         initComponents();
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = null;
+            con = DriverManager.getConnection("jdbc:mysql://localhost/liberaryproject","root", "");
+            System.out.print("Database is connected !");
+            Statement stmt=con.createStatement();  
+            ResultSet rs=stmt.executeQuery("select * from borrower");
+            borrowertable.setModel(DbUtils.resultSetToTableModel(rs));
+            
+            con.close();
+        }
+        catch(  ClassNotFoundException | SQLException e)
+        {
+            System.out.print("Do not connect to DB - Error:"+e);
+        }
     }
 
     /**
@@ -29,25 +51,14 @@ public class GenerateReport extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
         indiraPannel = new javax.swing.JPanel();
         indiraButton = new javax.swing.JButton();
         backButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
-        menuPannel = new javax.swing.JPanel();
-        studentInformationButton = new javax.swing.JButton();
-        bookInformationButton = new javax.swing.JButton();
-        transactionHistoryButton = new javax.swing.JButton();
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/logo.png"))); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jScrollPane1 = new javax.swing.JScrollPane();
+        borrowertable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(838, 490));
 
         indiraPannel.setBackground(new java.awt.Color(18, 49, 113));
 
@@ -63,15 +74,15 @@ public class GenerateReport extends javax.swing.JFrame {
         indiraPannelLayout.setHorizontalGroup(
             indiraPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(indiraPannelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(19, 19, 19)
                 .addComponent(indiraButton, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         indiraPannelLayout.setVerticalGroup(
             indiraPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, indiraPannelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(indiraButton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                .addGap(10, 10, 10)
+                .addComponent(indiraButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -83,43 +94,20 @@ public class GenerateReport extends javax.swing.JFrame {
         });
 
         titleLabel.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        titleLabel.setText("Generate Report");
+        titleLabel.setText("Borrower List");
 
-        menuPannel.setBackground(new java.awt.Color(153, 255, 153));
-        menuPannel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        studentInformationButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_More_Info_50px.png"))); // NOI18N
-        studentInformationButton.setText("Studednt Information");
-
-        bookInformationButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Check_Book_50px.png"))); // NOI18N
-        bookInformationButton.setText("Book Information");
-
-        transactionHistoryButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Receipt_50px.png"))); // NOI18N
-        transactionHistoryButton.setText("Transaction History");
-
-        javax.swing.GroupLayout menuPannelLayout = new javax.swing.GroupLayout(menuPannel);
-        menuPannel.setLayout(menuPannelLayout);
-        menuPannelLayout.setHorizontalGroup(
-            menuPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(menuPannelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(studentInformationButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addComponent(bookInformationButton)
-                .addGap(18, 18, 18)
-                .addComponent(transactionHistoryButton)
-                .addGap(18, 18, 18))
-        );
-        menuPannelLayout.setVerticalGroup(
-            menuPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPannelLayout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addGroup(menuPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(studentInformationButton)
-                    .addComponent(bookInformationButton)
-                    .addComponent(transactionHistoryButton))
-                .addGap(19, 19, 19))
-        );
+        borrowertable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(borrowertable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,14 +117,14 @@ public class GenerateReport extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(backButton)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(titleLabel)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(menuPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(titleLabel))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,18 +132,14 @@ public class GenerateReport extends javax.swing.JFrame {
                 .addComponent(indiraPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(titleLabel)
-                .addGap(55, 55, 55)
-                .addComponent(menuPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(backButton))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void indiraButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indiraButtonActionPerformed
         // TODO add your handling code here:
@@ -163,14 +147,14 @@ public class GenerateReport extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
 
-        LiberarianMenu liberarianMenu=new LiberarianMenu();
-        liberarianMenu.setVisible(true);
+        ManageBorrower manageBorrower=new ManageBorrower();
+        manageBorrower.setVisible(true);
         
-        //To change the window
-        GenerateBackup generateBackup = new GenerateBackup();
-        generateBackup.setVisible(false);
+        //To close the Current Window
+        BorrowerList borrowerList=new BorrowerList();
+        borrowerList.setVisible(false);
         dispose();
-            
+                
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
@@ -190,31 +174,28 @@ public class GenerateReport extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GenerateReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BorrowerList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GenerateReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BorrowerList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GenerateReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BorrowerList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GenerateReport.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BorrowerList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new GenerateReport().setVisible(true);
+            new BorrowerList().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton backButton;
-    private javax.swing.JButton bookInformationButton;
+    private javax.swing.JTable borrowertable;
     private javax.swing.JButton indiraButton;
     private javax.swing.JPanel indiraPannel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel menuPannel;
-    private javax.swing.JButton studentInformationButton;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel titleLabel;
-    private javax.swing.JButton transactionHistoryButton;
     // End of variables declaration//GEN-END:variables
 }

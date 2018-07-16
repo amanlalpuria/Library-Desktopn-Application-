@@ -5,6 +5,13 @@
  */
 package liberaryproject;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
+import javax.swing.JOptionPane;
+import liberaryproject.Menu.LiberarianMenu;
+
 /**
  *
  * @author amans
@@ -31,6 +38,8 @@ public class GenerateBackup extends javax.swing.JFrame {
         indiraButton = new javax.swing.JButton();
         backUpPannel = new javax.swing.JPanel();
         backUpButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         titleLabel = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
 
@@ -67,6 +76,17 @@ public class GenerateBackup extends javax.swing.JFrame {
 
         backUpButton.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
         backUpButton.setText("Generate Backup");
+        backUpButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backUpButtonActionPerformed(evt);
+            }
+        });
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setTabSize(16);
+        jTextArea1.setText("This will backup the whole data regarding Students Details,\nBooks and Borrowers.This can help to recover the data whenever system \nget corrupted or upgraded.\n");
+        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout backUpPannelLayout = new javax.swing.GroupLayout(backUpPannel);
         backUpPannel.setLayout(backUpPannelLayout);
@@ -75,12 +95,18 @@ public class GenerateBackup extends javax.swing.JFrame {
             .addGroup(backUpPannelLayout.createSequentialGroup()
                 .addGap(228, 228, 228)
                 .addComponent(backUpButton)
-                .addContainerGap(217, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backUpPannelLayout.createSequentialGroup()
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         backUpPannelLayout.setVerticalGroup(
             backUpPannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, backUpPannelLayout.createSequentialGroup()
-                .addContainerGap(141, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(backUpButton)
                 .addContainerGap())
         );
@@ -121,7 +147,7 @@ public class GenerateBackup extends javax.swing.JFrame {
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(backUpPannel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(backButton))
         );
 
@@ -142,6 +168,54 @@ public class GenerateBackup extends javax.swing.JFrame {
         generateBackup.setVisible(false);
         dispose();
     }//GEN-LAST:event_backButtonActionPerformed
+
+    private void backUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backUpButtonActionPerformed
+        // TODO add your handling code here:
+        try {
+
+        /*NOTE: Getting path to the Jar file being executed*/
+        /*NOTE: YourImplementingClass-> replace with the class executing the code*/
+        CodeSource codeSource = GenerateBackup.class.getProtectionDomain().getCodeSource();
+        File jarFile = new File(codeSource.getLocation().toURI().getPath());
+        String jarDir = jarFile.getParentFile().getPath();
+
+
+        /*NOTE: Creating Database Constraints*/
+        String dbName = "liberaryproject";
+        String dbUser = "root";
+        String dbPass = " ";
+
+        /*NOTE: Creating Path Constraints for folder saving*/
+        /*NOTE: Here the backup folder is created for saving inside it*/
+        String folderPath = jarDir + "\\backup";
+
+        /*NOTE: Creating Folder if it does not exist*/
+        File f1 = new File(folderPath);
+        f1.mkdir();
+
+        /*NOTE: Creating Path Constraints for backup saving*/
+        /*NOTE: Here the backup is saved in a folder called backup with the name backup.sql*/
+         String savePath = "\"" + jarDir + "\\backup\\" + "backup.sql\"";
+
+        /*NOTE: Used to create a cmd command*/
+        String executeCmd = "mysqldump -u" + dbUser + " -p" + dbPass + " --database " + dbName + " -r " + savePath;
+
+        /*NOTE: Executing the command here*/
+        Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+        int processComplete = runtimeProcess.waitFor();
+
+        /*NOTE: processComplete=0 if correctly executed, will contain other values if not*/
+        if (processComplete == 0) {
+            System.out.println("Backup Complete");
+            JOptionPane.showMessageDialog(null, "Backup Complete");
+        } else {
+            System.out.println("Backup Failure");
+        }
+
+    } catch (URISyntaxException | IOException | InterruptedException ex) {
+        JOptionPane.showMessageDialog(null, "Error at Backuprestore" + ex.getMessage());
+    }
+    }//GEN-LAST:event_backUpButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,6 +256,8 @@ public class GenerateBackup extends javax.swing.JFrame {
     private javax.swing.JPanel backUpPannel;
     private javax.swing.JPanel indiarPannel;
     private javax.swing.JButton indiraButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
