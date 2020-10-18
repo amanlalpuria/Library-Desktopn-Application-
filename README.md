@@ -6,37 +6,37 @@ A desktop application for Library Management.
 
     Both student and Staff Login
 
-    ![Login](ScreenShots/Login_Page.png)
+    ![Login](/ScreenShots/Login_Page.PNG)
 
-    ![Login](ScreenShots/StudentLogin.png)
+    ![Login](/ScreenShots/StudentLogin.PNG)
 2. Manage Books
 - Add New Book
    
-   ![Add New Book](ScreenShots/Add_New_Book.png)
+   ![Add New Book](/ScreenShots/Add_New_Book.PNG)
 
 - List of Books
    
-   ![List of Books](ScreenShots/List_of_Book.png)
+   ![List of Books](/ScreenShots/List_of_Book.PNG)
 
 - Update Books
    
-   ![Update Books](ScreenShots/UpdateBook.png)
+   ![Update Books](/ScreenShots/UpdateBook.PNG)
 
 3. Manage Student
 - Add New Student
    
-   ![Add New Student](ScreenShots/Add_New_Student.png)
+   ![Add New Student](/ScreenShots/Add_New_Student.PNG)
 
 - Manage Student
    
-   ![Manage Books](ScreenShots/Manage_Student.png)
+   ![Manage Books](/ScreenShots/Manage_Student.PNG)
 
 4. Search
     
     Provided different search option
 
-   ![Search](ScreenShots/Search.png)
+   ![Search](/ScreenShots/Search.PNG)
 
 5. BackUp
 
-    ![Backup](ScreenShots/Generate_Backup.png)
+    ![Backup](/ScreenShots/Generate_Backup.PNG)
